@@ -1,26 +1,34 @@
-# 🤖 AI Voice Assistant（语音版ChatGPT）
+# 🤖 AI Voice Assistant（语音版 ChatGPT）
 
 ---
 
 ## 🎯 项目简介
-这是一个 AI 语音助手 Android APP（类似 ChatGPT + Siri）
+这是一个 AI 语音助手 Android App（类似 ChatGPT + Siri）
+
+用户可以通过语音与 AI 对话，并获得语音回复。
+
+---
+
+## 💰 项目预算
+500（完整可运行 MVP 版本）
 
 ---
 
 ## 🎯 核心功能
 
 - 🎤 语音输入（SpeechRecognition）
-- 🤖 ChatGPT AI 回复（OpenAI API）
-- 🔊 语音播报（SpeechSynthesis）
-- 🔁 自动语音对话（类似Siri循环模式）
+- 🤖 ChatGPT AI 对话（OpenAI API，多轮记忆）
+- 🔊 AI语音播报（SpeechSynthesis）
+- 🔁 自动语音循环（类似 Siri 助手模式）
+- 📱 Android APK（Capacitor）
 
 ---
 
 ## 🧠 技术架构
 
 - Vite + React（前端）
-- Capacitor Android（打包APK）
-- Node.js Proxy（API安全层）
+- Capacitor Android（APK打包）
+- Node.js Proxy / Cloudflare Worker（API安全层）
 
 结构：
 
@@ -37,18 +45,18 @@ OpenAI API
 ❌ 禁止：
 - OpenAI API Key 写在前端
 - API Key 提交到 GitHub
-- APK内硬编码 Key
+- APK 内硬编码 Key
 
 ✔ 必须：
 - 使用 backend proxy
 - API Key 存在 server environment
-- 前端只调用接口
+- 前端只调用 API 接口
 
 ---
 
 ## ⚙️ 后端要求
 
-- Node.js Express 或 Fastify
+- Node.js Express 或 Cloudflare Worker
 - 只做 API 转发
 - 不要数据库
 - 不要登录系统
@@ -78,9 +86,9 @@ OpenAI API
 
 ## 📦 交付内容
 
-✔ 完整源代码  
-✔ 可运行 Vite 项目  
-✔ Capacitor Android 项目  
+✔ 完整 GitHub 源代码  
+✔ 可 clone 直接运行  
+✔ Vite + Capacitor 项目  
 ✔ 可成功 build APK  
 
 ---
@@ -97,4 +105,6 @@ OpenAI API
 
 ## 🎯 最终目标
 
-👉 一个可以运行的 Android AI语音助手 APK
+👉 手机打开 APK 即可：
+- 说话 → AI回复 → 语音播报
+- 可连续语音对话（类似 Siri）
