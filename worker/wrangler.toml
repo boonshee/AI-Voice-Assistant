@@ -1,0 +1,9 @@
+name = "voice-ai-proxy"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+OPENAI_MODEL = "gpt-4o-mini"
+
+# Secret（不要写入 Git）:
+# wrangler secret put OPENAI_API_KEY

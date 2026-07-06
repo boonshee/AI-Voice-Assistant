@@ -1,110 +1,81 @@
-# 🤖 AI Voice Assistant（语音版 ChatGPT）
+# AI Voice Assistant（语音版 ChatGPT）
 
----
+Android 语音助手：语音输入、ChatGPT 多轮对话、语音播报、自动循环。技术栈 Vite + React + Capacitor + Node.js Proxy。
 
-## 🎯 项目简介
-这是一个 AI 语音助手 Android App（类似 ChatGPT + Siri）
+OpenAI Key 只写在 `server/.env`，不进前端、不进 GitHub。
 
-用户可以通过语音与 AI 对话，并获得语音回复。
+## 目录
 
----
+- `client/` — 前端与 Android 工程
+- `server/` — 后端，提供 `/health` 和 `/api/chat`
+- `worker/` — Cloudflare Worker 备选 Proxy
 
-## 💰 项目预算
-500（完整可运行 MVP 版本）
+## 环境
 
----
+Node.js 20+。打 APK 需 JDK 17+、Android SDK（`JAVA_HOME`、`ANDROID_HOME`）。OpenAI Key 验收时自行准备。
 
-## 🎯 核心功能
+## 后端
 
-- 🎤 语音输入（SpeechRecognition）
-- 🤖 ChatGPT AI 对话（OpenAI API，多轮记忆）
-- 🔊 AI语音播报（SpeechSynthesis）
-- 🔁 自动语音循环（类似 Siri 助手模式）
-- 📱 Android APK（Capacitor）
+```powershell
+cd server
+npm install
+copy .env.example .env
+```
 
----
+编辑 `.env` 填入 `OPENAI_API_KEY`，然后：
 
-## 🧠 技术架构
+```powershell
+npm start
+```
 
-- Vite + React（前端）
-- Capacitor Android（APK打包）
-- Node.js Proxy / Cloudflare Worker（API安全层）
+本机访问 `http://localhost:3001/health` 应返回 `{"status":"ok"}`。终端会打印手机可用的局域网地址。
 
-结构：
+接口：`GET /health`；`POST /api/chat`（body: `{"messages":[{"role":"user","content":"你好"}]}`）。
 
-App（前端）
-  ↓
-Backend Proxy（Node.js）
-  ↓
-OpenAI API
+## 前端（浏览器）
 
----
+```powershell
+cd client
+npm install
+npm run dev
+```
 
-## 🔐 API安全要求（非常重要）
+## 构建 APK
 
-❌ 禁止：
-- OpenAI API Key 写在前端
-- API Key 提交到 GitHub
-- APK 内硬编码 Key
+```powershell
+cd client
+npm install
+npm run build
+npx cap sync android
+cd android
+.\gradlew.bat assembleDebug
+```
 
-✔ 必须：
-- 使用 backend proxy
-- API Key 存在 server environment
-- 前端只调用 API 接口
+产物：`client/android/app/build/outputs/apk/debug/app-debug.apk`
 
----
+## 手机联调
 
-## ⚙️ 后端要求
+1. `server` 目录 `npm start`
+2. 安装 APK
+3. App 设置填 `http://电脑局域网IP:3001` → 测试连接 → 保存
+4. 开「自动」，点麦克风连续对话
 
-- Node.js Express 或 Cloudflare Worker
-- 只做 API 转发
-- 不要数据库
-- 不要登录系统
-- 不要复杂逻辑
+## GitHub Actions
 
----
+push 到 `main` 自动构建 APK，在 Actions → Artifacts 下载 `app-debug`。
 
-## 📱 前端要求
+## 核心功能
 
-- Vite + React
-- Capacitor Android
-- webDir = dist
-- 移动端适配
+- 语音输入（Web + Android 原生识别）
+- ChatGPT 多轮记忆
+- 语音播报与自动循环
+- Android APK
 
----
+## 安全
 
-## 🚀 APK构建流程
+- API Key 仅 `server/.env` 或 Worker Secret
+- 前端只调 `/api/chat`，不直连 OpenAI
 
-必须保证以下流程可运行：
+## 不包含
 
-1. npm install
-2. npm run build
-3. npx cap sync android
-4. npx cap open android
-
----
-
-## 📦 交付内容
-
-✔ 完整 GitHub 源代码  
-✔ 可 clone 直接运行  
-✔ Vite + Capacitor 项目  
-✔ 可成功 build APK  
-
----
-
-## ❌ 不包含功能
-
-- 登录系统
-- 数据库
-- 唤醒词（Hey AI）
-- CI/CD自动部署
-- 复杂UI设计
-
----
-
-## 🎯 最终目标
-
-👉 手机打开 APK 即可：
-- 说话 → AI回复 → 语音播报
-- 可连续语音对话（类似 Siri）
+登录、数据库、唤醒词、复杂 UI
