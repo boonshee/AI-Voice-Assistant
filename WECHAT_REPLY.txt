@@ -1,7 +1,7 @@
 您好，材料已整理在 GitHub：
 
 源码：https://github.com/boonshee/AI-Voice-Assistant
-APK：仓库 Actions → 最新成功记录 → Artifacts 下载 app-debug
+APK：仓库 Actions → 最新成功记录 → Artifacts 下载 app-debug（请务必用最新版，旧版测试连接会失败）
 
 Cloudflare Worker 未预部署，请用电脑跑 Node server 验收。
 
@@ -9,5 +9,7 @@ Cloudflare Worker 未预部署，请用电脑跑 Node server 验收。
 1. cd server → npm install → copy .env.example .env → 填入 OPENAI_API_KEY → npm start
 2. 终端会打印 http://192.168.x.x:3001，手机 App 设置里填这个地址
 3. 测试连接 → 保存 → 开自动模式 → 点麦克风说话
+
+若浏览器能打开 http://IP:3001/health 但 App 测试连接失败，请重新安装最新 APK。
 
 详细说明见仓库 CUSTOMER_GUIDE.md，含 .env 配置、Proxy 填写和完整验收流程。
