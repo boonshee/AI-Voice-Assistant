@@ -48,13 +48,13 @@ export function SettingsPanel({ open, onClose, onSaved }: Props) {
 
     setStatus('checking')
     setMessage('正在检测连接…')
-    const ok = await checkApiHealth(url.trim())
-    if (ok) {
+    const result = await checkApiHealth(url.trim())
+    if (result.ok) {
       setStatus('ok')
       setMessage('连接成功，可以保存')
     } else {
       setStatus('fail')
-      setMessage('无法连接，请确认 server 已启动且地址正确')
+      setMessage(`无法连接：${result.error}。请确认 server 已启动且地址正确`)
     }
   }
 
@@ -67,10 +67,10 @@ export function SettingsPanel({ open, onClose, onSaved }: Props) {
     }
 
     setStatus('checking')
-    const ok = await checkApiHealth(url.trim())
-    if (!ok) {
+    const result = await checkApiHealth(url.trim())
+    if (!result.ok) {
       setStatus('fail')
-      setMessage('保存失败：请先通过连接测试')
+      setMessage(`保存失败：${result.error}`)
       return
     }
 

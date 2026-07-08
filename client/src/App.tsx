@@ -33,8 +33,8 @@ export default function App() {
     if (!Capacitor.isNativePlatform()) return
 
     void (async () => {
-      const ok = await checkApiHealth()
-      if (!ok) {
+      const result = await checkApiHealth()
+      if (!result.ok) {
         setSetupRequired(true)
         setSettingsOpen(true)
       }

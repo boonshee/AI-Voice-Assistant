@@ -180,6 +180,7 @@ wrangler deploy
 - 手机与电脑是否同一 WiFi？
 - Proxy 地址是否为 `http://IP:3001`（不是 https）？
 - Windows 防火墙是否放行 3001？
+- 若浏览器能打开 `http://IP:3001/health` 但 App 测试连接失败，请重新下载 **最新 APK**（GitHub Actions 产物）。旧版 APK 未启用原生 HTTP，无法访问局域网 http:// Proxy。
 
 **AI 无回复 / 鉴权错误**
 

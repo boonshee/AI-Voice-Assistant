@@ -75,14 +75,20 @@ export async function clearApiBase(): Promise<void> {
   await removeStoredBase()
 }
 
-export async function checkApiHealth(baseUrl?: string): Promise<boolean> {
+export type HealthCheckResult = { ok: true } | { ok: false; error: string }
+
+export async function checkApiHealth(baseUrl?: string): Promise<HealthCheckResult> {
   const base = normalizeBase(baseUrl ?? (await getApiBase()))
   try {
     const response = await fetch(`${base}/health`, { method: 'GET' })
-    if (!response.ok) return false
+    if (!response.ok) {
+      return { ok: false, error: `HTTP ${response.status}` }
+    }
     const body = (await response.json().catch(() => null)) as { status?: string } | null
-    return body?.status === 'ok'
-  } catch {
-    return false
+    if (body?.status === 'ok') return { ok: true }
+    return { ok: false, error: '响应格式异常' }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : '网络请求失败'
+    return { ok: false, error: message }
   }
 }
