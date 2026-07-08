@@ -1,5 +1,12 @@
 # AI Voice Assistant（语音版 ChatGPT）
 
+**客户验收请读 [CUSTOMER_GUIDE.md](CUSTOMER_GUIDE.md)**（含 server 启动、Proxy 填写、完整流程）。
+
+默认 Proxy 方案：**本机 Node.js**（`server/`），Cloudflare Worker **未预部署**。  
+APK 下载：GitHub **Actions** → 最新 run → **Artifacts** → `app-debug`。
+
+---
+
 Android 语音助手：语音输入、ChatGPT 多轮对话、语音播报、自动循环。技术栈 Vite + React + Capacitor + Node.js Proxy。
 
 OpenAI Key 只写在 `server/.env`，不进前端、不进 GitHub。
