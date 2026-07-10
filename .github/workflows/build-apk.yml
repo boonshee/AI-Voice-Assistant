@@ -37,8 +37,23 @@ jobs:
         working-directory: client
         run: npm install
 
+      - name: Verify cloud build config
+        run: |
+          if [ -z "${{ secrets.VITE_API_BASE_URL }}" ]; then
+            echo "::error::GitHub Secret VITE_API_BASE_URL 未配置，APK 将默认 localhost 无法在真机使用"
+            exit 1
+          fi
+          if [ -n "${{ secrets.VITE_PROXY_TOKEN }}" ]; then
+            echo "VITE_PROXY_TOKEN 已配置，请确保 Worker 也已设置相同的 PROXY_AUTH_TOKEN"
+          else
+            echo "::notice::未配置 VITE_PROXY_TOKEN（可选）；若 Worker 启用了 PROXY_AUTH_TOKEN，APK 对话将返回 401"
+          fi
+
       - name: npm run build
         working-directory: client
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_PROXY_TOKEN: ${{ secrets.VITE_PROXY_TOKEN }}
         run: npm run build
 
       - name: npx cap sync android

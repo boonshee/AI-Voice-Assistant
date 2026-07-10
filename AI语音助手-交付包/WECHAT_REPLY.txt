@@ -1,0 +1,27 @@
+您好，已升级为**云端模式**，装 APK 即可用，无需开电脑：
+
+源码：https://github.com/boonshee/AI-Voice-Assistant
+APK：AI语音助手-交付包/release/app-debug.apk（已预置客户 Worker 地址）
+或：仓库 Actions → 最新成功记录 → Artifacts 下载 app-debug
+
+【客户使用 — 3 步】
+1. 安装 APK，授予麦克风权限
+2. 打开 App → 开「自动对话」→ 点麦克风说话（WiFi 或 4G 均可）
+3. 无需填 Proxy、无需开电脑；对话自动保存在手机本地
+
+【部署说明（我方一次性配置）】
+1. cd worker → wrangler secret put OPENAI_API_KEY → wrangler deploy
+2. GitHub Secrets 设置 VITE_API_BASE_URL = https://voice-ai-proxy.boonshee-ai.workers.dev
+3. push 后 Actions 自动打出预置云端地址的 APK
+
+【客户 Worker 已上线】
+- 地址：https://voice-ai-proxy.boonshee-ai.workers.dev
+- 健康检查：/health 返回 {"status":"ok"} ✓
+- 本地已打出预置该地址的 APK：AI语音助手-交付包/release/app-debug.apk（约 3.9MB）
+
+【功能说明】
+- AI 对话走云端 Worker（Key 在云端，不进 APK）
+- 语音识别/播报在手机本地完成
+- 聊天记录自动保存在本机（关 App 再开仍在；卸载会清除）
+
+局域网 Node 调试方案见 CUSTOMER_GUIDE.md「开发调试备选」。

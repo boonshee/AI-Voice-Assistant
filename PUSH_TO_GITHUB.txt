@@ -1,0 +1,24 @@
+【当前状态】客户已发出协作者邀请，但仍是 Pending（待接受），所以 push 会 403。
+
+【你要做的——约 1 分钟】
+
+1. 浏览器打开 https://github.com 并用账号 FHY12345-ALT 登录
+   （本机 git push 用的是这个账号，不是 gelenari）
+
+2. 接受邀请，任选一种方式：
+   - 点右上角铃铛 Notifications，找到 boonshee/AI-Voice-Assistant 邀请 → Accept
+   - 或打开邮箱里 GitHub 发来的邀请邮件 → Accept invitation
+   - 或登录后访问 https://github.com/notifications
+
+3. 接受成功后，在本机执行：
+   cd "c:\Users\fhy12345\Desktop\AI语音助手项目"
+   git push -u origin main
+
+4. 打开 https://github.com/boonshee/AI-Voice-Assistant/actions
+   等 Build Android APK 变绿，Artifacts 下载 app-debug
+
+【发给客户（若你收不到邀请邮件）】
+
+> 邀请还是 Pending 状态，我这边还没法 Accept。请确认邀请发到了 FHY12345-ALT 这个 GitHub 账号对应的邮箱，或麻烦在 Collaborators 里 Resend invitation。我接受后马上 push。
+
+【不要密码】只需在 GitHub 网页点 Accept invitation。

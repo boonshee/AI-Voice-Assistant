@@ -1,0 +1,24 @@
+您好，Worker 部署包已准备好。
+
+【附件】voice-ai-worker-deploy.zip（解压后进入 worker 目录操作）
+
+【您需要设置的 Secret】
+必填（1 个）：
+  OPENAI_API_KEY  — 您的 OpenAI API Key
+
+可选（1 个，防滥用，可不设）：
+  PROXY_AUTH_TOKEN — 若设置请一并告知我们，需同步写入 APK
+
+【部署命令摘要】
+  npm install -g wrangler
+  cd worker
+  wrangler login
+  wrangler secret put OPENAI_API_KEY
+  wrangler deploy
+
+【部署成功后请发我】
+  1. 完整 workers.dev 地址（例：https://voice-ai-proxy.xxx.workers.dev，不要末尾斜杠）
+  2. 浏览器打开 地址/health 是否显示 {"status":"ok"}
+  3. 若设置了 PROXY_AUTH_TOKEN，请私下告知
+
+详细步骤见 ZIP 内「客户部署说明.txt」。
