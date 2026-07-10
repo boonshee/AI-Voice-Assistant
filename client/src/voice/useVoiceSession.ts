@@ -4,6 +4,7 @@ import { getVoiceAdapter } from './voiceAdapter'
 import type { VoicePhase } from './types'
 
 const RESTART_DELAY_MS = 300
+const MAX_EMPTY_RECOGNITIONS = 3
 
 interface State {
   phase: VoicePhase
@@ -56,6 +57,7 @@ export function useVoiceSession({ onSend, onInputPreview }: Options) {
   const onSendRef = useRef(onSend)
   const onInputPreviewRef = useRef(onInputPreview)
   const abortControllerRef = useRef<AbortController | null>(null)
+  const emptyRecognitionCountRef = useRef(0)
 
   useEffect(() => {
     phaseRef.current = state.phase
@@ -90,6 +92,7 @@ export function useVoiceSession({ onSend, onInputPreview }: Options) {
 
     dispatch({ type: 'CLEAR_ERROR' })
     dispatch({ type: 'SET_PHASE', phase: 'listening' })
+    emptyRecognitionCountRef.current = 0
 
     await adapterRef.current.start({
       onPartial: (partial) => {
@@ -105,6 +108,15 @@ export function useVoiceSession({ onSend, onInputPreview }: Options) {
           onInputPreviewRef.current?.(trimmed)
 
           if (!trimmed) {
+            emptyRecognitionCountRef.current += 1
+            if (emptyRecognitionCountRef.current >= MAX_EMPTY_RECOGNITIONS) {
+              dispatch({
+                type: 'SET_ERROR',
+                message: '未识别到语音，请检查麦克风权限或靠近手机说话',
+              })
+              sessionActiveRef.current = false
+              return
+            }
             if (autoVoiceRef.current && sessionActiveRef.current) {
               await delay(RESTART_DELAY_MS)
               if (sessionActiveRef.current) await startListeningInternal()
@@ -113,6 +125,8 @@ export function useVoiceSession({ onSend, onInputPreview }: Options) {
             }
             return
           }
+
+          emptyRecognitionCountRef.current = 0
 
           if (!autoVoiceRef.current) {
             sessionActiveRef.current = false

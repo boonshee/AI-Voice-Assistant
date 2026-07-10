@@ -20,7 +20,15 @@ npx wrangler deploy
 ```powershell
 curl https://voice-ai-proxy.xxx.workers.dev/health
 # 期望: {"status":"ok"}
+
+# 重要：health 通过不代表对话可用；若启用了 PROXY_AUTH_TOKEN 必须带 Token 测 chat
+$headers = @{ "X-Proxy-Token" = "<与 PROXY_AUTH_TOKEN 相同>"; "Content-Type" = "application/json" }
+$body = '{"messages":[{"role":"user","content":"你好"}]}'
+Invoke-RestMethod -Uri "https://voice-ai-proxy.xxx.workers.dev/api/chat" -Method POST -Headers $headers -Body $body
+# 期望: 200 且返回 content 字段
 ```
+
+> **客户若设置了 `PROXY_AUTH_TOKEN`，必须私下告知维护方**，否则 APK 对话会 401，表现为「说了没反应」。App 首启与设置页「测试连接」现已同时检测 `/health` 与 `/api/chat`。
 
 ## 2. 配置 GitHub Secrets
 

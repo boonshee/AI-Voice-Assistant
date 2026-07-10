@@ -1,0 +1,21 @@
+【发给客户 — 排查「没反应」后请确认 Token】
+
+您好，我们已定位原因：
+
+您的云端地址 https://voice-ai-proxy.boonshee-ai.workers.dev 在线正常（/health 通过），
+但对话接口启用了访问 Token（PROXY_AUTH_TOKEN），当前 APK 尚未配对，
+所以会出现「说了话没回复 / 没反应」。
+
+请您二选一：
+
+方案 A（推荐）：私下发我们 Worker 里设置的 PROXY_AUTH_TOKEN 原值，
+我们马上重打配对版 APK 给您。
+
+方案 B（临时验证）：在 Cloudflare 删除 PROXY_AUTH_TOKEN 后重新 deploy，
+用现有 APK 试 10 分钟；验证完建议恢复 Token。
+
+【客户 30 秒自检】
+1. 打开 App → 设置 → 点「测试连接」
+2. 文字框输入「你好」点发送 — 若提示鉴权失败，即证实此问题
+3. 确认已点 🎤，顶部显示「聆听中」
+4. 若曾装旧版：设置 →「恢复默认」→ 保存

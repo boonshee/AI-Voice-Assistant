@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
-  checkApiHealth,
+  checkApiConnectivity,
   clearApiBase,
   getApiBase,
   getDefaultApiBase,
@@ -49,10 +49,15 @@ export function SettingsPanel({ open, onClose, onSaved, onClearHistory }: Props)
 
     setStatus('checking')
     setMessage('正在检测连接…')
-    const result = await checkApiHealth(url.trim())
+    const result = await checkApiConnectivity(url.trim())
     if (result.ok) {
       setStatus('ok')
-      setMessage('连接成功，可以保存')
+      setMessage('连接成功（含对话接口），可以保存')
+    } else if (result.authFailure) {
+      setStatus('fail')
+      setMessage(
+        '地址可达，但 Token 不匹配。需更新安装包或核对 Worker 的 PROXY_AUTH_TOKEN；也可临时关闭 Worker 门禁验证',
+      )
     } else {
       setStatus('fail')
       setMessage(`无法连接：${result.error}。请确认地址正确且云端服务可用`)
@@ -68,10 +73,14 @@ export function SettingsPanel({ open, onClose, onSaved, onClearHistory }: Props)
     }
 
     setStatus('checking')
-    const result = await checkApiHealth(url.trim())
+    const result = await checkApiConnectivity(url.trim())
     if (!result.ok) {
       setStatus('fail')
-      setMessage(`保存失败：${result.error}`)
+      if (result.authFailure) {
+        setMessage('保存失败：Token 不匹配，需更新安装包或核对 Worker 鉴权配置')
+      } else {
+        setMessage(`保存失败：${result.error}`)
+      }
       return
     }
 

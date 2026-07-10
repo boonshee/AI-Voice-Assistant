@@ -9,7 +9,7 @@ import { PHASE_LABELS } from './voice/types'
 import { ChatMessageBubble } from './components/ChatMessage'
 import { InputBar } from './components/InputBar'
 import { SettingsPanel } from './components/SettingsPanel'
-import { checkApiHealth, getApiBase } from './config/apiBase'
+import { checkApiConnectivity, getApiBase } from './config/apiBase'
 
 const SAVE_DEBOUNCE_MS = 300
 
@@ -20,6 +20,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [setupRequired, setSetupRequired] = useState(false)
+  const [setupMessage, setSetupMessage] = useState('无法连接云端服务，请检查网络或在设置中修改 Proxy 地址')
   const [apiBaseLabel, setApiBaseLabel] = useState('…')
   const listRef = useRef<HTMLDivElement>(null)
   const messagesRef = useRef(messages)
@@ -87,9 +88,16 @@ export default function App() {
     if (!Capacitor.isNativePlatform()) return
 
     void (async () => {
-      const result = await checkApiHealth()
+      const result = await checkApiConnectivity()
       if (!result.ok) {
         setSetupRequired(true)
+        if (result.authFailure) {
+          setSetupMessage(
+            '云端已连通，但鉴权未配对。请联系客服获取新版安装包，或请管理员核对 Worker 的 PROXY_AUTH_TOKEN',
+          )
+        } else {
+          setSetupMessage('无法连接云端服务，请检查网络或在设置中修改 Proxy 地址')
+        }
       }
     })()
   }, [])
@@ -180,7 +188,7 @@ export default function App() {
 
       {setupRequired && (
         <div className="setup-banner">
-          无法连接云端服务，请检查网络或在设置中修改 Proxy 地址
+          {setupMessage}
           <button type="button" className="setup-banner-btn" onClick={() => setSettingsOpen(true)}>
             去设置
           </button>
